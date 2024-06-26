@@ -1,0 +1,65 @@
+:root {
+  body {
+    --bg-color: #ffffff;
+    --font-color: #333333;
+    --disabled-btn: #949494;
+
+    --violet: #674db3;
+    --violet-dark: #584299;
+    --violet-light: #ede7fe;
+    --gray-black: #5c5c5c;
+    --gray: #e2e2e2;
+    --gray-5: #949494;
+    --black: #000000;
+    --white: #ffffff;
+
+    --marker-green: #1d9f55;
+    --marker-red: #d65555;
+
+    --br-sm: 8px;
+    --br-md: 12px;
+
+    --zIndex-comment-sidebar: 3;
+  }
+}
+
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: url("$fonts/NunitoSans-Bold.ttf") format("truetype"),
+    url("$fonts/NunitoSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("$fonts/NunitoSans-Regular.ttf") format("truetype"),
+    url("$fonts/NunitoSans-Regular.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
+}
+
+#root {
+  position: absolute;
+  z-index: 2;
+}
+
+.ifc-div-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.menu-float-button {
+  margin-top: 8px;
+}
