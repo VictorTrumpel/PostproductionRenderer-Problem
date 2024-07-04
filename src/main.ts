@@ -29,6 +29,14 @@ import * as OBCF from "@thatopen/components-front";
 
   world.scene.setup();
 
+  const stats = new Stats();
+  stats.showPanel(2);
+  document.body.append(stats.dom);
+  stats.dom.style.left = "0px";
+  stats.dom.style.zIndex = "unset";
+  world.renderer.onBeforeUpdate.add(() => stats.begin());
+  world.renderer.onAfterUpdate.add(() => stats.end());
+
   const grids = components.get(OBC.Grids);
   grids.config.color.set(0x666666);
   const grid = grids.create(world);
@@ -53,12 +61,4 @@ import * as OBCF from "@thatopen/components-front";
     world.scene.three.add(model);
   }
   /* FILE LOADING */
-
-  const stats = new Stats();
-  stats.showPanel(2);
-  document.body.append(stats.dom);
-  stats.dom.style.left = "0px";
-  stats.dom.style.zIndex = "unset";
-  world.renderer.onBeforeUpdate.add(() => stats.begin());
-  world.renderer.onAfterUpdate.add(() => stats.end());
 })();
