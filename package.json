@@ -9,24 +9,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/three": "^0.166.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
   },
   "dependencies": {
-    "@thatopen/components": "~2.0.18",
-    "@thatopen/components-front": "^2.0.21",
-    "@thatopen/fragments": "~2.0.6",
-    "@thatopen/ui": "~2.0.8",
-    "@thatopen/ui-obc": "~2.0.10",
-    "@types/earcut": "^2.1.4",
-    "@types/three": "^0.160.0",
-    "camera-controls": "2.7.3",
-    "dexie": "^4.0.4",
-    "earcut": "^2.2.4",
-    "n8ao": "1.5.1",
-    "postprocessing": "6.34.2",
-    "stats.js": "^0.17.0",
-    "three": "^0.160.1",
-    "web-ifc": "0.0.55"
+    "openbim-components": "^1.5.1"
   }
 }
