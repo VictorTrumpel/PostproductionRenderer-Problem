@@ -1,4 +1,3 @@
-import Stats from "stats.js";
 import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
 
