@@ -1,64 +1,69 @@
-import Stats from "stats.js";
-import * as OBC from "@thatopen/components";
-import * as OBCF from "@thatopen/components-front";
+import {
+  Components,
+  SimpleScene,
+  PostproductionRenderer,
+  SimpleCamera,
+  FragmentIfcLoader,
+} from "openbim-components";
+import * as THREE from "three";
 
 (async () => {
   const container = document.createElement("div");
   container.classList.add("ifc-div-container");
   document.body.append(container);
 
-  const components = new OBC.Components();
+  const components = new Components();
 
-  const worlds = components.get(OBC.Worlds);
+  const scene = new SimpleScene(components);
+  components.scene = scene;
 
-  const world = worlds.create<
-    OBC.SimpleScene,
-    OBC.SimpleCamera,
-    OBCF.PostproductionRenderer
-  >();
+  const renderer = new PostproductionRenderer(components, container);
+  components.renderer = renderer;
 
-  world.scene = new OBC.SimpleScene(components);
-  world.renderer = new OBCF.PostproductionRenderer(components, container);
-  world.camera = new OBC.SimpleCamera(components);
+  const camera = new SimpleCamera(components);
+  components.camera = camera;
+  camera.controls.setLookAt(
+    -11.28190328847281,
+    7.994236391860568,
+    12.437743947066124,
+    2.678323934084071,
+    3.495292709896221,
+    -2.842170943040401e-14
+  );
 
-  world.scene.three.background = null;
+  const directionalLight = new THREE.DirectionalLight();
+  directionalLight.position.set(5, 10, 3);
+  directionalLight.intensity = 0.5;
+  scene.get().add(directionalLight);
+
+  const ambientLight = new THREE.AmbientLight();
+  ambientLight.intensity = 0.5;
+  scene.get().add(ambientLight);
 
   components.init();
 
-  world.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
+  renderer.postproduction.enabled = true;
 
-  world.scene.setup();
+  scene.setup();
 
-  const stats = new Stats();
-  stats.showPanel(2);
-  document.body.append(stats.dom);
-  stats.dom.style.left = "0px";
-  stats.dom.style.zIndex = "unset";
-  world.renderer.onBeforeUpdate.add(() => stats.begin());
-  world.renderer.onAfterUpdate.add(() => stats.end());
+  const fragmentIfcLoader = new FragmentIfcLoader(components);
+  fragmentIfcLoader.settings.wasm = {
+    path: "https://unpkg.com/web-ifc@0.0.53/",
+    absolute: true,
+  };
 
-  const grids = components.get(OBC.Grids);
-  grids.config.color.set(0x666666);
-  const grid = grids.create(world);
+  async function loadDemoModel() {
+    const files = ["test-1", "test-2", "test-3"];
 
-  const { postproduction } = world.renderer;
-  postproduction.enabled = true;
-  postproduction.customEffects.excludedMeshes.push(grid.three);
-  const ao = postproduction.n8ao.configuration;
-
-  /* FILE LOADING */
-  const fileNames = ["test-1.ifc", "test-2.ifc", "test-3.ifc"];
-  const fragmentIfcLoader = components.get(OBC.IfcLoader);
-
-  await fragmentIfcLoader.setup();
-
-  for (const fileName of fileNames) {
-    const file = await fetch(`/${fileName}`);
-    console.log("file :>> ", file);
-    const data = await file.arrayBuffer();
-    const buffer = new Uint8Array(data);
-    const model = await fragmentIfcLoader.load(buffer);
-    world.scene.three.add(model);
+    for (const fileName of files) {
+      const response = await fetch(`/${fileName}.ifc`);
+      let file = await response.blob();
+      const data = await file.arrayBuffer();
+      const buffer = new Uint8Array(data);
+      const model = await fragmentIfcLoader.load(buffer);
+      scene.get().add(model);
+    }
   }
-  /* FILE LOADING */
+
+  loadDemoModel();
 })();
